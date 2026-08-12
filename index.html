@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#050812">
+<title>LOST BEYOND</title>
+<style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02050b;color:#e8f7ff;font-family:Arial,sans-serif;touch-action:none}button{font:inherit;color:#e8f7ff;background:rgba(10,25,40,.78);border:1px solid #4fc3f7;border-radius:10px;padding:12px 16px;box-shadow:0 0 12px rgba(79,195,247,.12)}button:active{transform:scale(.97);background:rgba(30,70,90,.9)}#game{position:fixed;inset:0;width:100%;height:100%;display:block}.screen{position:fixed;inset:0;z-index:50}.menu{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:radial-gradient(circle at 50% 35%,rgba(30,80,120,.28),rgba(0,0,0,.88)),#03070e}.title{font-size:clamp(42px,12vw,92px);letter-spacing:8px;font-weight:800;text-shadow:0 0 30px #42c8ff}.subtitle{opacity:.7;letter-spacing:3px;margin-bottom:30px}.menu button{width:min(280px,72vw);font-size:16px;letter-spacing:2px}.small{position:absolute;bottom:18px;opacity:.4;font-size:12px}.hidden{display:none!important}#cinematic{background:#000;display:none;align-items:center;justify-content:center;text-align:center}.cineVisible{display:flex!important}.cineText{font-size:clamp(22px,6vw,50px);letter-spacing:5px;opacity:0;transition:opacity 1.2s}.panel{position:fixed;z-index:70;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,600px);max-height:86vh;overflow:auto;padding:20px;background:rgba(3,12,22,.96);border:1px solid #4fc3f7;border-radius:16px;box-shadow:0 0 40px rgba(0,0,0,.7)}.panelTitle{font-size:20px;font-weight:bold;letter-spacing:2px;margin-bottom:16px}.panel button{margin:6px 4px}.progress{height:12px;background:#152333;border-radius:8px;overflow:hidden;margin:16px 0}.progress i{display:block;height:100%;width:0;background:#58d8ff}.craftRow{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0}.panel label{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #193042}
+#hud{position:fixed;inset:0;z-index:20;pointer-events:none;padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}.stat{display:grid;grid-template-columns:20px 72px 32px 90px;gap:4px;align-items:center;font-size:10px;margin:3px 0}.stat b{font-size:10px;text-align:right}.stat i{height:6px;background:#162532;border-radius:6px;overflow:hidden}.stat em{display:block;height:100%;width:100%;background:#62d7ff}.stat:nth-child(1) em{background:#ff6677}.stat:nth-child(3) em{background:#53cfff}.stat:nth-child(4) em{background:#e6a45e}.stat:nth-child(5) em{background:#ffe45e}.stat:nth-child(6) em{background:#9ed8ff}#stats{position:absolute;left:max(12px,env(safe-area-inset-left));top:max(12px,env(safe-area-inset-top));background:rgba(0,8,16,.35);padding:7px;border-radius:8px}.stat span{opacity:.7}#location{position:absolute;right:max(12px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));text-align:right;font-size:11px;letter-spacing:1px;line-height:1.7;text-shadow:0 1px 5px #000}.objective{pointer-events:none}#objective{position:absolute;left:50%;top:18%;transform:translateX(-50%);font-size:10px;text-align:center;letter-spacing:2px;opacity:.75}#objective b{font-size:13px;color:#8ce7ff}#crosshair{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:22px;text-shadow:0 0 8px #5bdcff}#joystick{pointer-events:auto;position:absolute;left:22px;bottom:26px;width:118px;height:118px;border:2px solid rgba(120,220,255,.35);background:rgba(30,70,90,.18);border-radius:50%}.#stick{}#stick{position:absolute;width:54px;height:54px;left:31px;top:31px;border-radius:50%;background:rgba(100,210,255,.35);border:1px solid rgba(150,240,255,.6)}#lookZone{pointer-events:auto;position:absolute;right:0;top:25%;width:52%;height:55%}#actions{pointer-events:auto;position:absolute;right:max(12px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(3,auto);gap:7px;justify-content:end;max-width:55vw}#actions button{min-width:62px;font-size:10px;padding:10px 8px;background:rgba(5,20,30,.55)}#toast{position:absolute;left:50%;bottom:23%;transform:translateX(-50%);padding:8px 14px;background:rgba(0,0,0,.65);border:1px solid rgba(100,210,255,.4);border-radius:8px;opacity:0;transition:opacity .2s;white-space:nowrap}.inventoryGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.invItem{min-height:65px;border:1px solid #23485c;border-radius:8px;padding:7px;background:#071521;font-size:11px}.invItem b{display:block;font-size:13px}.mission{padding:12px;border-bottom:1px solid #193042}.mission.done{opacity:.5}.mission b{display:block;color:#8ce7ff;margin-bottom:5px}#itemInfo{min-height:55px;padding:12px;background:#06121d;margin-top:10px;border-radius:8px;font-size:12px}@media(max-width:600px){#actions{grid-template-columns:repeat(2,auto)}#joystick{width:110px;height:110px}.stat{grid-template-columns:18px 65px 28px 72px}.stat i{width:72px}}</style>
+</head>
+<body>
+<div id="app">
+  <canvas id="game"></canvas>
+
+  <div id="cinematic" class="screen">
+    <div id="cineText"></div>
+    <button id="skipCine">SKIP</button>
+  </div>
+
+  <div id="menu" class="screen menu">
+    <div class="title">LOST BEYOND</div>
+    <div class="subtitle">SURVIVE • EXPLORE • DISCOVER</div>
+    <button id="newGame">NEW GAME</button>
+    <button id="continueGame">CONTINUE</button>
+    <button id="settingsBtn">SETTINGS</button>
+    <div class="small">Browser prototype • v0.5.0</div>
+  </div>
+
+  <div id="hud" class="hidden">
+    <div id="stats">
+      <div class="stat">❤ <span>HEALTH</span><b id="health">100</b><i><em id="healthBar"></em></i></div>
+      <div class="stat">🫁 <span>OXYGEN</span><b id="oxygen">100</b><i><em id="oxygenBar"></em></i></div>
+      <div class="stat">💧 <span>HYDRATION</span><b id="hydration">100</b><i><em id="hydrationBar"></em></i></div>
+      <div class="stat">🍖 <span>HUNGER</span><b id="hunger">100</b><i><em id="hungerBar"></em></i></div>
+      <div class="stat">⚡ <span>ENERGY</span><b id="energy">100</b><i><em id="energyBar"></em></i></div>
+      <div class="stat">🌡 <span>TEMP</span><b id="temp">NORMAL</b><i><em id="tempBar"></em></i></div>
+    </div>
+    <div id="location">PLANET: UNKNOWN<br><span>REGION: CRASH SITE</span></div>
+    <div id="objective">CURRENT OBJECTIVE<br><b id="objectiveText">ASSESS THE DAMAGE</b></div>
+    <div id="crosshair">+</div>
+    <div id="toast"></div>
+
+    <div id="joystick"><div id="stick"></div></div>
+    <div id="lookZone"></div>
+
+    <div id="actions">
+      <button data-action="jump">JUMP</button>
+      <button data-action="crouch">CROUCH</button>
+      <button data-action="interact">INTERACT</button>
+      <button data-action="flashlight">LIGHT</button>
+      <button data-action="scanner">SCANNER</button>
+      <button data-action="inventory">BAG</button>
+      <button data-action="missions">MISSIONS</button>
+      <button data-action="pause">☰</button>
+    </div>
+
+    <div id="scannerOverlay" class="panel hidden">
+      <div class="panelTitle">SCANNER</div>
+      <div id="scanText">READY</div>
+      <div class="progress"><i id="scanBar"></i></div>
+      <button id="closeScanner">CLOSE</button>
+    </div>
+  </div>
+
+  <div id="inventoryPanel" class="panel hidden">
+    <div class="panelTitle">INVENTORY <span id="weight">0 / 20 KG</span></div>
+    <div id="inventoryGrid"></div>
+    <div id="itemInfo">Select an item.</div>
+    <div class="craftRow">
+      <button id="craftOxygen">CRAFT OXYGEN TANK</button>
+      <button id="craftMedkit">CRAFT MEDKIT</button>
+    </div>
+    <button id="closeInventory">CLOSE</button>
+  </div>
+
+  <div id="missionPanel" class="panel hidden">
+    <div class="panelTitle">MISSIONS</div>
+    <div id="missionList"></div>
+    <button id="closeMissions">CLOSE</button>
+  </div>
+
+  <div id="settingsPanel" class="panel hidden">
+    <div class="panelTitle">SETTINGS</div>
+    <label>Camera sensitivity <input id="sens" type="range" min="0.3" max="2.5" step="0.1" value="1"></label>
+    <label>Screen shake <input id="shake" type="checkbox" checked></label>
+    <label>Vibration <input id="vibrate" type="checkbox" checked></label>
+    <button id="closeSettings">CLOSE</button>
+  </div>
+
+  <div id="pausePanel" class="panel hidden">
+    <div class="panelTitle">PAUSED</div>
+    <button id="resume">RESUME</button>
+    <button id="saveBtn">SAVE</button>
+    <button id="pauseSettings">SETTINGS</button>
+    <button id="mainMenu">MAIN MENU</button>
+  </div>
+</div>
+
+
+</body>
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+class InputManager{
+ constructor(game){this.g=game;this.moveX=0;this.moveY=0;this.jump=false;this.crouch=false;this.keys={};addEventListener("keydown",e=>this.keys[e.code]=true);addEventListener("keyup",e=>this.keys[e.code]=false)}
+ update(dt){
+  let x=this.moveX,y=this.moveY;
+  if(this.keys.KeyW)y+=1;if(this.keys.KeyS)y-=1;if(this.keys.KeyA)x-=1;if(this.keys.KeyD)x+=1;
+  const len=Math.hypot(x,y);if(len>1){x/=len;y/=len}
+  const speed=this.crouch?2:((this.g.controls.running)?7:4);
+  const yaw=this.g.player.yaw;
+  this.g.player.pos.x += (Math.sin(yaw)*y+Math.cos(yaw)*x)*speed*dt;
+  this.g.player.pos.z += (Math.cos(yaw)*y-Math.sin(yaw)*x)*speed*dt;
+  if(this.jump && this.g.player.onGround){this.g.player.onGround=false;this.g.player.pos.y=3;setTimeout(()=>{this.g.player.pos.y=1.7;this.g.player.onGround=true},350)}
+  this.jump=false;
+ }
+}
+class SaveSystem{
+ constructor(g){this.g=g;this.key="lost-beyond-save-v1"}
+ save(){const g=this.g;localStorage.setItem(this.key,JSON.stringify({state:g.state,player:{x:g.player.pos.x,y:g.player.pos.y,z:g.player.pos.z,yaw:g.player.yaw,pitch:g.player.pitch},survival:g.survival.values,inventory:g.inventory.items}))}
+ load(){const raw=localStorage.getItem(this.key);if(!raw)return this.g.resetState();try{const d=JSON.parse(raw);Object.assign(this.g.state,d.state||{});Object.assign(this.g.player.pos,d.player?{x:d.player.x,y:d.player.y,z:d.player.z}:{});this.g.player.yaw=d.player?.yaw||0;this.g.player.pitch=d.player?.pitch||0;if(d.survival)Object.assign(this.g.survival.values,d.survival);if(d.inventory)Object.assign(this.g.inventory.items,d.inventory);this.g.hud.toast("SAVE LOADED")}catch(e){console.error(e);this.g.resetState()}}
+ clear(){localStorage.removeItem(this.key)}
+}
+class SurvivalSystem{
+ constructor(g){this.g=g;this.reset()}
+ reset(){this.values={health:100,oxygen:100,hydration:100,hunger:100,energy:100,temp:50}}
+ update(dt){
+  const v=this.values;v.hydration=Math.max(0,v.hydration-dt*.035);v.hunger=Math.max(0,v.hunger-dt*.025);
+  const running=this.g.controls.running;v.energy=Math.min(100,Math.max(0,v.energy+(running?-dt*.7:dt*.35)));
+  if(v.oxygen>0)v.oxygen=Math.max(0,v.oxygen-dt*.004);else v.health=Math.max(0,v.health-dt*.5);
+  if(v.hydration<=0||v.hunger<=0)v.health=Math.max(0,v.health-dt*.25);
+  if(v.health<=0){this.g.hud.toast("YOU DIED");this.g.setPause(true)}
+ }
+}
+class HUD{
+ constructor(g){this.g=g;this.toastTimer=0}
+ update(){const v=this.g.survival.values;for(const k of ["health","oxygen","hydration","hunger","energy"]){document.getElementById(k).textContent=Math.round(v[k]);document.getElementById(k+"Bar").style.width=v[k]+"%"}document.getElementById("temp").textContent=v.temp>70?"HOT":v.temp<30?"COLD":"NORMAL";document.getElementById("objectiveText").textContent=this.g.state.objective;document.getElementById("location").innerHTML=`PLANET: AURELIA-9<br><span>REGION: CRASH SITE • DAY 01 • ${String(Math.floor(this.g.state.time)).padStart(2,"0")}:${String(Math.floor((this.g.state.time%1)*60)).padStart(2,"0")}</span>`;if(this.toastTimer>0){this.toastTimer-=.016;if(this.toastTimer<=0)document.getElementById("toast").style.opacity=0}}
+ toast(t){const e=document.getElementById("toast");e.textContent=t;e.style.opacity=1;this.toastTimer=2.5}
+}
+class MobileControls{
+ constructor(g){this.g=g;this.sensitivity=1;this.running=false;this.joy=document.querySelector("#joystick");this.stick=document.querySelector("#stick");this.look=document.querySelector("#lookZone");this.bindJoy();this.bindLook()}
+ bindJoy(){let active=false,cx=0,cy=0;const start=e=>{active=true;const p=e.touches?e.touches[0]:e;const r=this.joy.getBoundingClientRect();cx=r.left+r.width/2;cy=r.top+r.height/2;move(p)};const move=e=>{if(!active)return;const p=e.touches?e.touches[0]:e;let dx=p.clientX-cx,dy=p.clientY-cy;const max=48;const l=Math.hypot(dx,dy);if(l>max){dx*=max/l;dy*=max/l}this.stick.style.transform=`translate(${dx}px,${dy}px)`;this.g.input.moveX=dx/max;this.g.input.moveY=-dy/max;this.running=Math.hypot(this.g.input.moveX,this.g.input.moveY)>.82};const end=()=>{active=false;this.stick.style.transform="";this.g.input.moveX=0;this.g.input.moveY=0;this.running=false};this.joy.addEventListener("touchstart",e=>{e.preventDefault();start(e)},{passive:false});this.joy.addEventListener("touchmove",e=>{e.preventDefault();move(e)},{passive:false});this.joy.addEventListener("touchend",end)}
+ bindLook(){let last=null;this.look.addEventListener("touchstart",e=>{last=e.touches[0]},{passive:true});this.look.addEventListener("touchmove",e=>{const p=e.touches[0];if(!last)return;const dx=p.clientX-last.clientX,dy=p.clientY-last.clientY;this.g.player.yaw-=dx*.006*this.sensitivity;this.g.player.pitch-=dy*.004*this.sensitivity;this.g.player.pitch=Math.max(-1.25,Math.min(1.25,this.g.player.pitch));last=p},{passive:true});this.look.addEventListener("touchend",()=>last=null)}
+}
+class IntroCinematic{
+ constructor(g){this.g=g;this.running=false;this.timer=null;this.lines=["YEAR 2187","DEEP SPACE EXPLORATION PROGRAM","UNKNOWN PHENOMENON DETECTED","GRAVITATIONAL ANOMALY","NAVIGATION FAILURE","COMMUNICATION OFFLINE","THE SHIP IS FALLING","AURELIA-9","SURVIVE."]}
+ play(){this.running=true;const c=document.querySelector("#cinematic");c.classList.add("cineVisible");let i=0;const next=()=>{if(!this.running)return;if(i>=this.lines.length){this.finish();return}const t=document.querySelector("#cineText");t.textContent=this.lines[i++];t.style.opacity=1;setTimeout(()=>{t.style.opacity=0;setTimeout(next,600)},1800)};next()}
+ skip(){if(this.running)this.finish()}
+ finish(){this.running=false;clearTimeout(this.timer);document.querySelector("#cinematic").classList.remove("cineVisible");this.g.paused=false;this.g.state.objective="ASSESS THE DAMAGE"}
+}
+class Inventory{
+ constructor(g){this.g=g;this.reset();this.bind()}
+ reset(){this.items={iron:0,copper:2,carbon:0,silicon:0,titanium:0,lithium:0,crystal:0,water:2,food:1,oxygenTank:0,medkit:0}}
+ add(id,n=1){this.items[id]=(this.items[id]||0)+n;this.g.hud.toast(`+${n} ${id.toUpperCase()}`);this.render()}
+ craft(id){const recipes={oxygenTank:{need:{titanium:2,carbon:1},add:{oxygenTank:1}},medkit:{need:{carbon:1,food:1},add:{medkit:1}}};const r=recipes[id];if(Object.entries(r.need).every(([k,v])=>(this.items[k]||0)>=v)){for(const [k,v] of Object.entries(r.need))this.items[k]-=v;for(const [k,v] of Object.entries(r.add))this.items[k]=(this.items[k]||0)+v;this.g.hud.toast("CRAFT COMPLETE");this.render()}else this.g.hud.toast("MATERIALS REQUIRED")}
+ bind(){document.querySelector("#closeInventory").onclick=()=>document.querySelector("#inventoryPanel").classList.add("hidden")}
+ render(){const grid=document.querySelector("#inventoryGrid");if(!grid)return;grid.innerHTML=Object.entries(this.items).filter(([,v])=>v>0).map(([k,v])=>`<div class="invItem"><b>${k.toUpperCase()}</b>x${v}</div>`).join("");document.querySelector("#weight").textContent="LOADOUT • 20 KG MAX"}
+}
+
+class CreatureSystem{
+ constructor(g){this.g=g;this.list=[]}
+ spawnInitial(){for(let i=0;i<6;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(.55,8,6),new THREE.MeshStandardMaterial({color:i%2?0x6b9d78:0x8d6b9d}));m.position.set((Math.random()-.5)*60,.6,(Math.random()-.5)*60);this.g.scene.add(m);this.list.push({mesh:m,home:m.position.clone(),phase:Math.random()*10,hostile:i===5})}}
+ update(dt){for(const c of this.list){c.phase+=dt;const d=c.mesh.position.distanceTo(this.g.player.pos);if(d<18&&c.hostile){const dir=this.g.player.pos.clone().sub(c.mesh.position).normalize();c.mesh.position.addScaledVector(dir,dt*1.2)}else{c.mesh.position.x+=Math.sin(c.phase)*dt*.25;c.mesh.position.z+=Math.cos(c.phase*.7)*dt*.25}}}
+}
+class ShipSystem{
+ constructor(g){this.g=g;this.repaired=false}
+ update(dt){}
+ repairOxygen(){if(this.g.inventory.items.titanium>=3&&this.g.inventory.items.copper>=2){this.g.inventory.items.titanium-=3;this.g.inventory.items.copper-=2;this.g.state.ship.oxygen=100;this.repaired=true;this.g.state.objective="RESTORE POWER";this.g.hud.toast("OXYGEN SYSTEM RESTORED");return true}this.g.hud.toast("NEED TITANIUM x3 + COPPER x2");return false}
+}
+
+class BaseSystem{
+ constructor(g){this.g=g}
+ update(dt){}
+ buildSolar(){const m=new THREE.Mesh(new THREE.BoxGeometry(3,.12,2),new THREE.MeshStandardMaterial({color:0x1d5a86,metalness:.3,roughness:.4}));m.position.copy(this.g.player.pos);m.position.y=.08;this.g.scene.add(m);this.g.state.base.push({type:"SOLAR_PANEL",x:m.position.x,z:m.position.z});this.g.hud.toast("SOLAR PANEL BUILT")}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+class Game{
+ constructor(){
+  this.scene=new THREE.Scene();
+  this.scene.background=new THREE.Color(0x020812);
+  this.scene.fog=new THREE.Fog(0x07131c,35,180);
+  this.camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.05,500);
+  this.camera.position.set(0,1.7,8);
+  this.renderer=new THREE.WebGLRenderer({canvas:document.querySelector("#game"),antialias:false,powerPreference:"high-performance"});
+  this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+  this.renderer.setSize(innerWidth,innerHeight);
+  this.renderer.shadowMap.enabled=false;
+  this.clock=new THREE.Clock();
+  this.paused=true; this.started=false; this.speed=4;
+  this.player={pos:new THREE.Vector3(0,1.7,12),yaw:0,pitch:0,onGround:true};
+  this.state={version:"0.5.0",story:0,objective:"ASSESS THE DAMAGE",time:8.5,flashlight:false,base:[],ship:{oxygen:35,power:10,communication:0}};
+  this.input=new InputManager(this);
+  this.save=new SaveSystem(this);
+  this.survival=new SurvivalSystem(this);
+  this.hud=new HUD(this);
+  this.controls=new MobileControls(this);
+  this.inventory=new Inventory(this);
+  this.creatures=new CreatureSystem(this);
+  this.ship=new ShipSystem(this);
+  this.base=new BaseSystem(this);
+  this.cinematic=new IntroCinematic(this);
+  this.buildWorld();
+  this.bindUI();
+  addEventListener("resize",()=>this.resize());
+ }
+ buildWorld(){
+  const hemi=new THREE.HemisphereLight(0x9bdcff,0x172016,1.2);this.scene.add(hemi);
+  const sun=new THREE.DirectionalLight(0xffffff,1.3);sun.position.set(-30,40,20);this.scene.add(sun);
+  const ground=new THREE.Mesh(new THREE.PlaneGeometry(300,300,40,40),new THREE.MeshStandardMaterial({color:0x4a554d,roughness:1}));
+  ground.rotation.x=-Math.PI/2; this.scene.add(ground); this.ground=ground;
+  for(let i=0;i<120;i++){const r=1+Math.random()*3,h=.5+Math.random()*3;const m=new THREE.Mesh(new THREE.DodecahedronGeometry(r,0),new THREE.MeshStandardMaterial({color:0x303d3b,roughness:1}));m.scale.y=h;m.position.set((Math.random()-.5)*150,r*h/2,(Math.random()-.5)*150);this.scene.add(m)}
+  for(let i=0;i<1200;i++){const p=new THREE.Sprite(new THREE.SpriteMaterial({color:0xbde9ff,transparent:true,opacity:.7}));p.position.set((Math.random()-.5)*300,20+Math.random()*100,(Math.random()-.5)*300);p.scale.set(.15,.15,.15);this.scene.add(p)}
+  const planet=new THREE.Mesh(new THREE.SphereGeometry(14,24,24),new THREE.MeshBasicMaterial({color:0x28526e}));planet.position.set(-45,35,-90);this.scene.add(planet);
+  const ship=new THREE.Mesh(new THREE.CapsuleGeometry(2.5,8,4,12),new THREE.MeshStandardMaterial({color:0xb7c6cc,metalness:.6,roughness:.4}));ship.rotation.z=Math.PI/2;ship.position.set(0,2,4);this.scene.add(ship);this.shipMesh=ship;
+  const beacon=new THREE.Mesh(new THREE.CylinderGeometry(.25,.5,3,8),new THREE.MeshStandardMaterial({color:0x45d9ff,emissive:0x12667a,emissiveIntensity:2}));beacon.position.set(5,1.5,2);this.scene.add(beacon);
+  this.creatures.spawnInitial();
+ }
+ bindUI(){
+  const $=id=>document.getElementById(id);
+  $("newGame").onclick=()=>this.newGame();
+  $("continueGame").onclick=()=>this.continueGame();
+  $("settingsBtn").onclick=()=>$("settingsPanel").classList.remove("hidden");
+  $("closeSettings").onclick=()=>$("settingsPanel").classList.add("hidden");
+  $("sens").oninput=e=>this.controls.sensitivity=+e.target.value;
+  $("skipCine").onclick=()=>this.cinematic.skip();
+  $("closeInventory").onclick=()=>$("inventoryPanel").classList.add("hidden");
+  $("closeMissions").onclick=()=>$("missionPanel").classList.add("hidden");
+  $("closeScanner").onclick=()=>$("scannerOverlay").classList.add("hidden");
+  $("resume").onclick=()=>this.setPause(false);
+  $("saveBtn").onclick=()=>{this.save.save();this.hud.toast("GAME SAVED")};
+  $("pauseSettings").onclick=()=>{this.setPause(false);$("settingsPanel").classList.remove("hidden")};
+  $("mainMenu").onclick=()=>{this.setPause(true);$("pausePanel").classList.add("hidden");$("hud").classList.add("hidden");$("menu").classList.remove("hidden")};
+  $("craftOxygen").onclick=()=>this.inventory.craft("oxygenTank");
+  $("craftMedkit").onclick=()=>this.inventory.craft("medkit");
+  document.querySelectorAll("#actions button").forEach(b=>b.addEventListener("click",()=>this.action(b.dataset.action)));
+ }
+ newGame(){
+  this.save.clear();this.resetState();document.querySelector("#menu").classList.add("hidden");document.querySelector("#hud").classList.remove("hidden");this.paused=false;this.started=true;this.cinematic.play();
+ }
+ continueGame(){
+  document.querySelector("#menu").classList.add("hidden");document.querySelector("#hud").classList.remove("hidden");this.save.load();this.paused=false;this.started=true;
+ }
+ resetState(){this.state={version:"0.5.0",story:0,objective:"ASSESS THE DAMAGE",time:8.5,flashlight:false,base:[],ship:{oxygen:35,power:10,communication:0}};this.player.pos.set(0,1.7,12);this.survival.reset();this.inventory.reset()}
+ setPause(v){this.paused=v;document.querySelector("#pausePanel").classList.toggle("hidden",!v)}
+ action(a){
+  if(!this.started)return;
+  if(a==="jump")this.input.jump=true;
+  if(a==="crouch")this.input.crouch=!this.input.crouch;
+  if(a==="interact")this.interact();
+  if(a==="flashlight"){this.state.flashlight=!this.state.flashlight;this.hud.toast(this.state.flashlight?"FLASHLIGHT ON":"FLASHLIGHT OFF")}
+  if(a==="scanner")this.scan();
+  if(a==="inventory")document.querySelector("#inventoryPanel").classList.remove("hidden");
+  if(a==="missions")this.showMissions();
+  if(a==="pause")this.setPause(true);
+ }
+ interact(){
+  const d=this.player.pos.distanceTo(new THREE.Vector3(0,2,4));
+  if(d<10 && this.state.story<1){this.state.story=1;this.state.objective="RESTORE OXYGEN";this.hud.toast("SHIP SYSTEM: OXYGEN DAMAGE DETECTED");this.inventory.add("titanium",3);this.inventory.add("copper",2)}
+  else if(d<10 && this.state.story>=1 && !this.ship.repaired){this.ship.repairOxygen()}
+  else if(this.player.pos.distanceTo(new THREE.Vector3(5,1,2))<7){this.hud.toast("UNKNOWN SIGNAL DETECTED");this.state.objective="FOLLOW THE UNKNOWN SIGNAL"}
+  else {this.hud.toast("NOTHING TO INTERACT WITH")}
+ }
+ scan(){
+  const panel=document.querySelector("#scannerOverlay"),bar=document.querySelector("#scanBar"),txt=document.querySelector("#scanText");
+  panel.classList.remove("hidden");txt.textContent="SCANNING...";bar.style.width="0%";
+  let p=0;const t=setInterval(()=>{p+=10;bar.style.width=p+"%";if(p>=100){clearInterval(t);txt.textContent="SCAN COMPLETE — UNKNOWN MINERAL / SIGNAL TRACE";this.hud.toast("SCAN COMPLETE");}},90);
+ }
+ showMissions(){
+  const p=document.querySelector("#missionPanel"),l=document.querySelector("#missionList");p.classList.remove("hidden");
+  l.innerHTML=[["01","SURVIVE THE CRASH","Investigate the damaged ship.",this.state.story>=1],["02","RESTORE OXYGEN","Repair the ship's oxygen system.",this.ship.repaired],["03","FOLLOW THE SIGNAL","Investigate the unknown signal.",this.state.objective==="FOLLOW THE UNKNOWN SIGNAL"]].map(x=>`<div class="mission ${x[3]?"done":""}"><b>${x[0]} — ${x[1]}</b>${x[2]}</div>`).join("");
+ }
+ update(dt){
+  if(this.paused)return;
+  this.state.time=(this.state.time+dt*.035)%24;
+  this.survival.update(dt);
+  this.input.update(dt);
+  this.creatures.update(dt);
+  this.base.update(dt);
+  this.ship.update(dt);
+  this.hud.update();
+  this.camera.position.copy(this.player.pos);
+  this.camera.rotation.order="YXZ";this.camera.rotation.y=this.player.yaw;this.camera.rotation.x=this.player.pitch;
+ }
+ frame(){
+  requestAnimationFrame(()=>this.frame());
+  const dt=Math.min(this.clock.getDelta(),.05);
+  this.update(dt);this.renderer.render(this.scene,this.camera);
+ }
+ start(){this.frame()}
+ resize(){this.camera.aspect=innerWidth/innerHeight;this.camera.updateProjectionMatrix();this.renderer.setSize(innerWidth,innerHeight)}
+}
+
+
+const game = new Game(); window.LOST_BEYOND=game; game.start();
+</script>
+</html>
